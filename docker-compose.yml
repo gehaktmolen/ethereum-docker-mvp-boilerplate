@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+
+  # gateway/reverse proxy
+  nginx:
+    build: ./services/nginx
+    restart: always
+    depends_on:
+      - api
+      - ui
+      - ganache
+    volumes:
+      - ./logs:/var/log/nginx
+    ports:
+      # proxy api + ui
+      - "80:9000"
+      # proxy ethereum node so you can connect with metamask from browser
+      - "8545:9001"
+
+  # starts webpack watch server with hot reload for ui (vue) code
+  ui:
+    build:
+      context: ./services/ui
+      dockerfile: Dockerfile.development
+    restart: always
+    env_file:
+      - ./services/ui/.env
+    volumes:
+      - ./services/ui/src:/app/ui/src/
+      - ./logs:/logs
+
+  # api, handles browser requests initiated from ui  api:
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile.development
+    restart: always
+    env_file:
+      - ./services/api/.env
+    depends_on:
+      - mongo
+    volumes:
+      - ./services/api/src:/app/api/src/
+      - ./logs:/logs
+
+  # smart contracts source, tests and deployment code
+  smart-contracts:
+    build:
+      context: ./services/smart-contracts
+      dockerfile: Dockerfile.development
+    env_file:
+      - ./services/smart-contracts/.env
+    depends_on:
+      - ganache
+    volumes:
+      # mount the output contract build files into a host folder
+      - ./services/smart-contracts/src/build:/app/smart-contracts/build/
+      # mount the output test coverage report folder into a host folder
+      - ./services/smart-contracts/coverage-report:/app/smart-contracts/coverage/
+      - ./logs:/logs
+
+  # ganache-cli ethereum node
+  ganache:
+    image: trufflesuite/ganache-cli
+    command: "--seed abcd --defaultBalanceEther 100000000"
+
+  # mongodb
+  mongo:
+    build: ./services/mongodb
+    restart: always
+    ports:
+      # allow acces from (only!) localhost to mongo port 27017 so you can use
+      # MongoHub or some other app to connect to the mongodb and view its contents
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - ./data/mongo:/data/db
+      - ./logs:/var/log/mongodb

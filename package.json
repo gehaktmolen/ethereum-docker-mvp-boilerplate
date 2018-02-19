@@ -1,0 +1,50 @@
+{
+  "name": "ethereum-docker-mvp-boilerplate",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "setup": "npm i && cd services/api && npm i && cd ../ui && npm i && cd ../smart-contracts && npm i && cd ../../ && node scripts/copy-envs.js",
+    "start": "npm run deploy:smart-contracts && docker-compose up --build nginx api ui ganache mongo",
+    "start:detached": "npm run deploy:smart-contracts && docker-compose up --build -d nginx api ui ganache mongo",
+    "restart": "docker-compose stop && npm run deploy:smart-contracts && docker-compose up --build nginx api ui ganache mongo",
+    "restart:detached": "docker-compose stop && npm run deploy:smart-contracts && docker-compose up --build -d nginx api ui ganache mongo",
+    "stop": "docker-compose stop",
+    "test:smart-contracts": "docker-compose restart ganache && docker-compose build smart-contracts && docker-compose run smart-contracts test",
+    "test:coverage:smart-contracts": "docker-compose restart ganache && docker-compose build smart-contracts && docker-compose run smart-contracts test:coverage",
+    "lint:smart-contracts": "docker-compose build smart-contracts && docker-compose run smart-contracts lint",
+    "deploy:smart-contracts": "docker-compose restart ganache && docker-compose stop smart-contracts && docker-compose up --build -d smart-contracts && docker-compose run smart-contracts deploy && node scripts/move-contract-artifacts-to-ui-api.js",
+    "entershell:nginx": "docker-compose exec nginx sh",
+    "entershell:api": "docker-compose exec api sh",
+    "entershell:ui": "docker-compose exec ui sh",
+    "entershell:ganache": "docker-compose exec ganache sh",
+    "entershell:mongo": "docker-compose exec mongo sh",
+    "logs:nginx": "docker-compose logs nginx",
+    "logs:nginx:tail": "docker-compose logs -f nginx",
+    "logs:api": "docker-compose logs api",
+    "logs:api:tail": "docker-compose logs -f api",
+    "logs:ui": "docker-compose logs ui",
+    "logs:ui:tail": "docker-compose logs -f ui",
+    "logs:smart-contracts": "docker-compose logs smart-contracts",
+    "logs:smart-contracts:tail": "docker-compose logs -f smart-contracts",
+    "logs:ganache": "docker-compose logs ganache",
+    "logs:ganache:tail": "docker-compose logs -f ganache",
+    "logs:mongo": "docker-compose logs mongo",
+    "logs:mongo:tail": "docker-compose logs -f mongo"
+  },
+  "pre-commit": {
+    "run": "lint",
+    "silent": false
+  },
+  "dependencies": {
+    "copy-dir": "^0.3.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-html": "^3.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "pre-commit": "1.2.2"
+  }
+}

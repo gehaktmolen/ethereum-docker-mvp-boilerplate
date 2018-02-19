@@ -1,0 +1,35 @@
+{
+  "name": "app-smart-contracts",
+  "version": "0.1.0",
+  "description": "App - smart contracts",
+  "scripts": {
+    "test": "truffle test",
+    "test:coverage": "solidity-coverage",
+    "lint": "solium --dir /app/smart-contracts/contracts",
+    "deploy": "./deploy.sh"
+  },
+  "dependencies": {
+    "truffle": "^4.0.5"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^2.0.1",
+    "chai-http": "^3.0.0",
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-html": "^3.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "mocha": "^3.5.2",
+    "solidity-coverage": "^0.4.11",
+    "solium": "^1.1.5",
+    "truffle-contract": "^2.0.0"
+  },
+  "engines": {
+    "node": ">= 8.7.0",
+    "npm": ">= 5.4.2"
+  }
+}
