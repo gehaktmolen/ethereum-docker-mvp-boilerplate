@@ -1,4 +1,4 @@
-# ethereum-mvp-docker-boilerplate
+# ethereum-docker-mvp-boilerplate
 
 This boilerplate consist of 6 applications, each running in its own docker container.
 
