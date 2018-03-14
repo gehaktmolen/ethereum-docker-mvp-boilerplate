@@ -9,7 +9,7 @@ This boilerplate consist of 6 applications, each running in its own docker conta
 - `ganache`, simulated ethereum full node using `ganache-cli`
 - `mongo`, mongodb database
 
-There is a sample smart contract added called `Sample.sol`.
+![container overview](https://github.com/BlockChainCompany/ethereum-docker-mvp-boilerplate/raw/master/containers_overview.png)
 
 ## Prerequisites
 
@@ -72,6 +72,17 @@ To setup metamask:
 - if the `ganache` container is restarted, the nonce will be reset. If Metamask complains about a `"nonce mismatch"`, execute "reset account" in the Metamask browser plugin.
 - if you restart the application and the ui still shows the old state instead of the new fresh contract state,
 switch to a different network in the Metamask browser plugin (any will do), and then switch back to `localhost:8545`.
+
+## Credentials
+
+The web app uses authentication, the api uses passport + jsonwebtoken for authentication, the default credentials are located in `services/api/.env.sample`. When the api boots, it will check if there is a root user in the `Users` collection. If it doesn't find it, it will add the root user (see `services/api/seedDb.js`).
+
+The default credentials are:
+
+```
+username: admin@example.com
+password: changethis
+```
 
 ## Quickstart
 
