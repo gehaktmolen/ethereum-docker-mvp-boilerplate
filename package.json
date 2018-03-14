@@ -10,7 +10,7 @@
     "restart:detached": "docker-compose stop && npm run deploy:smart-contracts && docker-compose up --build -d nginx api ui ganache mongo",
     "stop": "docker-compose stop",
     "test:smart-contracts": "docker-compose restart ganache && docker-compose build smart-contracts && docker-compose run smart-contracts test",
-    "test:coverage:smart-contracts": "docker-compose restart ganache && docker-compose build smart-contracts && docker-compose run smart-contracts test:coverage",
+    "test:coverage:smart-contracts": "docker-compose build ganache && docker-compose restart ganache && docker-compose build smart-contracts && docker-compose run smart-contracts test:coverage",
     "lint:smart-contracts": "docker-compose build smart-contracts && docker-compose run smart-contracts lint",
     "deploy:smart-contracts": "docker-compose restart ganache && docker-compose stop smart-contracts && docker-compose up --build -d smart-contracts && docker-compose run smart-contracts deploy && node scripts/move-contract-artifacts-to-ui-api.js",
     "entershell:nginx": "docker-compose exec nginx sh",
