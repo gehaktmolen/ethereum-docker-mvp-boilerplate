@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "lint": "eslint .",
-    "setup": "npm i && cd services/api && npm i && cd ../ui && npm i && cd ../smart-contracts && npm i && cd ../../ && node scripts/copy-envs.js",
+    "setup": "npm i && cd services/api && npm i && cd ../ui && npm i && cd ../smart-contracts && npm i && cd ../../ && node scripts/copy-envs.js && npm run init-docker",
+    "init-docker": "docker-compose up --no-start --build",
     "start": "npm run deploy:smart-contracts && docker-compose up --build nginx api ui ganache mongo",
     "start:detached": "npm run deploy:smart-contracts && docker-compose up --build -d nginx api ui ganache mongo",
     "restart": "docker-compose stop && npm run deploy:smart-contracts && docker-compose up --build nginx api ui ganache mongo",
